@@ -16,5 +16,19 @@ async def welcome(message: types.Message):
                            parse_mode="html", reply_to_message_id=sticker_message.message_id)
 
 
+@dp.message_handler(commands=['schedule'])
+async def schedule(message: types.Message):
+    amizone_api.login(AMIZONE_ID, AMIZONE_PASSWORD)
+    args = message.text.split()
+    if len(args) == 1:
+    	response_text = amizone_api.getTimeTable()
+    elif len(args) == 2:
+    	response_text = amizone_api.getTimeTable(args[1])
+    else:
+    	response_text = "Error in given arguments"
+    await message.reply(response_text)
+
+
+
 if __name__ == '__main__':
     executor.start_polling(dp)

@@ -41,7 +41,7 @@ def getTimeTable(day=""):
         day = day.capitalize()
         days_of_the_week = "Monday,Tuesday,Wednesday,Thursday,Friday"
         if day not in days_of_the_week:
-            return 'Given "day" argument should be in range of Monday-Friday'
+            return 'Given day should be in range of Monday-Friday'
         days_to_parse = days_of_the_week.split(',') if not day else [day]
         tree = html.fromstring(html_text)
         if not tree.xpath('//div[' + ' or '.join(['contains(@id, "' + x + '")' for x in days_to_parse]) + ']'):
