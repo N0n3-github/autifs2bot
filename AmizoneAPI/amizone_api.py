@@ -11,7 +11,7 @@ ASPXAUTH = ""
 __version__ = "0.1 beta"
 
 
-def login(amizone_id, password):
+async def login(amizone_id, password):
     global ASPXAUTH
     login_token = re_search(r'<form action="/" class=" validate-form" id="loginform" method="post" name="loginform">'
                             r'<input name="__RequestVerificationToken".{0,20}value=".{0,110}/>',
@@ -36,16 +36,16 @@ def login(amizone_id, password):
         exit('Could not login to Amizone with provided login and password')
 
 
-def get_time_table(day=""):
+async def get_time_table(day=""):
     if not ASPXAUTH:
         raise Exception('Login to Amizone first')
 
     def parse_time_table(html_text):
         nonlocal day
         day = day.capitalize()
-        days_of_the_week = "Monday,Tuesday,Wednesday,Thursday,Friday"
+        days_of_the_week = "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday"
         if day not in days_of_the_week:
-            return 'Given day should be in range of Monday-Friday'
+            return 'Given day should be in range of Monday-Saturday'
         days_to_parse = days_of_the_week.split(',') if not day else [day]
         tree = html.fromstring(html_text)
         if not tree.xpath('//div[' + ' or '.join(['contains(@id, "' + x + '")' for x in days_to_parse]) + ']'):
